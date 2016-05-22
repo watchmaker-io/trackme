@@ -14,6 +14,9 @@ public class AndroidPhoneLocationListener implements LocationListener {
     private PhoneLocationRemoteApi phoneLocationRemoteApi;
     private PhoneLocationAccuracy phoneLocationAccuracy;
 
+    // FIXME dchojnacki
+    private String userId = "123456-abcd-efgh-7890";
+
 
     public AndroidPhoneLocationListener(PhoneLocationAccuracy phoneLocationAccuracy) {
         this.phoneLocationAccuracy = phoneLocationAccuracy;
@@ -60,7 +63,7 @@ public class AndroidPhoneLocationListener implements LocationListener {
         @Override
         protected Void doInBackground(PhoneLocation... params) {
             try {
-                phoneLocationRemoteApi.sendAccelerationValues(params[0]);
+                phoneLocationRemoteApi.sendAccelerationValues(userId, params[0]);
             } catch(Exception e) {
                 e.printStackTrace();
             }

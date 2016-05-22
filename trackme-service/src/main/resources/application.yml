@@ -1,0 +1,17 @@
+server:
+  servlet-path: /status
+
+management:
+  context-path: /
+
+spring:
+  jersey:
+    type: servlet
+
+cassandra:
+  keyspace: trackme
+  hosts: docker
+  port: 9042
+  username:
+  password:
+  compression: NONE

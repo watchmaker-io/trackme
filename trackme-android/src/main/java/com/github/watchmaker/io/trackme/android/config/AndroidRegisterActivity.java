@@ -12,6 +12,5 @@ public class AndroidRegisterActivity extends Activity {
 
         Intent serviceIntent = new Intent(this, AndroidPhoneLocationCollectingService.class);
         startService(serviceIntent);
-
     }
 }

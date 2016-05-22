@@ -1,0 +1,1 @@
+insert into trackme.phone_location(user_id, time, accuracy, longitude, latitude, altitude, speed) values(871dc0fb-8f02-4f77-a51a-efa3ada9251b, totimestamp(now()),'GPS', 51.91, 19.14, 173.14, 1.23);

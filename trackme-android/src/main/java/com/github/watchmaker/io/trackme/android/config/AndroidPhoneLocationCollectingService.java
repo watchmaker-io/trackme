@@ -20,6 +20,7 @@ public class AndroidPhoneLocationCollectingService extends IntentService {
 //                new AndroidPhoneLocationListener());
 //        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15 * 60 * 1000, 250,
 //                new AndroidPhoneLocationListener());
+        // FIXME dchojnacki
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
