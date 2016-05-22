@@ -1,0 +1,49 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.0'
+    }
+}
+
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        configgooglePlayRelease {
+            keyAlias 'key'
+            keyPassword 'key'
+            storeFile file('/Users/dariusz.chojnacki/Desktop/key')
+            storePassword 'key'
+        }
+    }
+    productFlavors {
+        googlePlay {
+            resValue "string", "app_name", "Track Me"
+        }
+    }
+    defaultConfig {
+        applicationId "com.github.watchmaker.io.trackme.android"
+        minSdkVersion 15
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    compileSdkVersion 15
+    buildToolsVersion "23.0.3"
+}
+
+repositories { 
+    jcenter()
+}
+
+dependencies {
+    compile 'joda-time:joda-time:2.7'
+    compile 'com.squareup.retrofit:retrofit:1.7.1'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.12'
+}
