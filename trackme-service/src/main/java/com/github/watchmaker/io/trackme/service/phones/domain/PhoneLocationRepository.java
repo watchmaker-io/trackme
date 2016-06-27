@@ -3,6 +3,9 @@ package com.github.watchmaker.io.trackme.service.phones.domain;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cassandra.core.ConsistencyLevel;
+import org.springframework.cassandra.core.RetryPolicy;
+import org.springframework.cassandra.core.WriteOptions;
 import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +14,11 @@ import java.util.UUID;
 
 @Repository
 public class PhoneLocationRepository {
+    /**
+     * 100 dni
+     */
+    public static final int DEFAULT_TTL = 100 * 24 * 60 * 60;
+
     private CassandraOperations cassandraOperations;
 
 
@@ -29,6 +37,11 @@ public class PhoneLocationRepository {
     }
 
     public void save(PhoneLocation phoneLocation) {
-        cassandraOperations.insert(phoneLocation);
+        WriteOptions options = new WriteOptions(
+                ConsistencyLevel.LOCAL_QUOROM,
+                RetryPolicy.LOGGING,
+                DEFAULT_TTL);
+
+        cassandraOperations.insert(phoneLocation, options);
     }
 }
