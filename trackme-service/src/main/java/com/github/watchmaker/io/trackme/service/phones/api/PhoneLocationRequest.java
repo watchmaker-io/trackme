@@ -12,6 +12,9 @@ import javax.validation.constraints.NotNull;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PhoneLocationRequest {
 
+    @NotNull(message = "name must be provided")
+    private String name;
+
     @NotNull(message = "longitude must be provided")
     private Double longitude;
 
@@ -32,19 +35,25 @@ public class PhoneLocationRequest {
 
 
     @JsonCreator
-    public PhoneLocationRequest(@JsonProperty("longitude") Double longitude,
+    public PhoneLocationRequest(@JsonProperty("name") String name,
+                                @JsonProperty("longitude") Double longitude,
                                 @JsonProperty("latitude") Double latitude,
                                 @JsonProperty("altitude") Double altitude,
                                 @JsonProperty("speed") Double speed,
                                 @JsonProperty("accuracy") String accuracy,
                                 @JsonProperty("time") DateTime time
     ) {
+        this.name = name;
         this.longitude = longitude;
         this.latitude = latitude;
         this.altitude = altitude;
         this.speed = speed;
         this.accuracy = accuracy;
         this.time = time;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getAccuracy() {

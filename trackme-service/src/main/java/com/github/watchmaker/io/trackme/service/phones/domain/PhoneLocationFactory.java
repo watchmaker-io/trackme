@@ -9,6 +9,7 @@ public class PhoneLocationFactory {
     public static PhoneLocation create(String userId, PhoneLocationRequest request) {
         return PhoneLocation.builder()
                             .withUserId(UUID.fromString(userId))
+                            .withName(request.getName())
                             .withAccuracy(request.getAccuracy())
                             .withLongitude(request.getLongitude())
                             .withLatitude(request.getLatitude())

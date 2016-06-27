@@ -16,6 +16,7 @@ public class PhoneLocation {
     public static final String COLUMN_FAMILY = "phone_location";
 
     public static final String USER_ID = "user_Id";
+    public static final String NAME = "name";
     public static final String TIME = "time";
     public static final String LONGITUDE = "longitude";
     public static final String LATITUDE = "latitude";
@@ -35,6 +36,11 @@ public class PhoneLocation {
             ordering = Ordering.DESCENDING)
     private Date time;
 
+    @PrimaryKeyColumn(
+            ordinal = 1,
+            type = PrimaryKeyType.CLUSTERED)
+    private String name;
+
     @Column
     private double longitude;
 
@@ -52,6 +58,7 @@ public class PhoneLocation {
 
 
     public PhoneLocation(UUID userId,
+                         String name,
                          Date time,
                          double longitude,
                          double latitude,
@@ -59,6 +66,7 @@ public class PhoneLocation {
                          double speed,
                          String accuracy) {
         this.userId = userId;
+        this.name = name;
         this.time = time;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -69,6 +77,10 @@ public class PhoneLocation {
 
     public UUID getUserId() {
         return userId;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public double getAltitude() {
@@ -87,10 +99,6 @@ public class PhoneLocation {
         return speed;
     }
 
-    public PhoneLocationAccuracy getPhoneLocationAccuracy() {
-        return PhoneLocationAccuracy.from(accuracy);
-    }
-
     public String getAccuracy() {
         return accuracy;
     }
@@ -105,6 +113,7 @@ public class PhoneLocation {
 
     public static class Builder {
         private UUID userId;
+        private String name;
         private double longitude;
         private double latitude;
         private double altitude;
@@ -118,6 +127,11 @@ public class PhoneLocation {
 
         public Builder withUserId(UUID userId) {
             this.userId = userId;
+            return this;
+        }
+
+        public Builder withName(String name) {
+            this.name = name;
             return this;
         }
 
@@ -152,7 +166,7 @@ public class PhoneLocation {
         }
 
         public PhoneLocation build() {
-            return new PhoneLocation(userId, time, longitude, latitude, altitude, speed, accuracy.name());
+            return new PhoneLocation(userId, name, time, longitude, latitude, altitude, speed, accuracy.name());
         }
     }
 }
