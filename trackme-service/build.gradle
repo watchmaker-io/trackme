@@ -29,14 +29,11 @@ repositories {
 
 dependencies {
 	compile(
-//		['org.springframework.boot:spring-boot-starter-actuator'],
-//		['org.springframework.boot:spring-boot-starter-cache'],
+		['org.springframework.boot:spring-boot-starter-actuator'],
 		['org.springframework.boot:spring-boot-starter-data-cassandra'],
 		['org.springframework.boot:spring-boot-starter-jersey'],
 		['org.springframework.boot:spring-boot-starter-web'],
-//		['org.springframework.boot:spring-boot-starter-security'],
-//		['org.springframework.boot:spring-boot-starter-aop'],
-//		['org.springframework.boot:spring-boot-starter-thymeleaf'],
+		['org.springframework.boot:spring-boot-starter-thymeleaf'],
 		['joda-time:joda-time:2.7'],
 		['com.fasterxml.jackson.datatype:jackson-datatype-joda:2.4.1'],
 		['com.google.guava:guava:19.0'],

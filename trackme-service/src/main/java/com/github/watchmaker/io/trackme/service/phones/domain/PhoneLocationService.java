@@ -23,8 +23,4 @@ public class PhoneLocationService {
     public List<PhoneLocation> findUserPhoneLocation(UUID userId) {
         return phoneLocationRepository.findByUserId(userId);
     }
-
-    public static void main(String[] args) {
-        System.out.println(UUID.randomUUID());
-    }
 }

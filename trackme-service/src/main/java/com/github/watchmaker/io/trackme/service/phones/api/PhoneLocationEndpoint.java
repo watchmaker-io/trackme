@@ -3,10 +3,9 @@ package com.github.watchmaker.io.trackme.service.phones.api;
 import com.github.watchmaker.io.trackme.service.phones.domain.PhoneLocation;
 import com.github.watchmaker.io.trackme.service.phones.domain.PhoneLocationFactory;
 import com.github.watchmaker.io.trackme.service.phones.domain.PhoneLocationService;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -30,26 +29,41 @@ public class PhoneLocationEndpoint {
     public static final String PATH = "/phone";
 
     private PhoneLocationService phoneLocationService;
+    private String requiredAccessToken;
 
 
     @Autowired
-    public PhoneLocationEndpoint(PhoneLocationService phoneLocationService) {
+    public PhoneLocationEndpoint(PhoneLocationService phoneLocationService,
+                                 @Value("${access.token}") String requiredAccessToken) {
         this.phoneLocationService = phoneLocationService;
+        this.requiredAccessToken = requiredAccessToken;
     }
 
     @Path("/{userId}")
     @POST
     public Response addPhoneLocation(@PathParam("userId") String userId,
-                                     @NotNull @Valid PhoneLocationRequest request){
+                                     @QueryParam("accessToken") String accessToken,
+                                     @NotNull @Valid PhoneLocationRequest request) {
+        checkAccessToken(accessToken);
+
         PhoneLocation phoneLocation = PhoneLocationFactory.create(userId, request);
         phoneLocationService.insert(phoneLocation);
 
         return Response.ok().build();
     }
 
+    private void checkAccessToken(String accessToken) {
+        if (!requiredAccessToken.equals(accessToken)){
+            throw new IllegalArgumentException(String.format("Incorrect access token: %s", accessToken));
+        }
+    }
+
     @Path("/{userId}/list")
     @GET
-    public Response list(@NotNull @PathParam("userId") String userIdParam) {
+    public Response list(@NotNull @PathParam("userId") String userIdParam,
+                         @QueryParam("accessToken") String accessToken) {
+        checkAccessToken(accessToken);
+
         UUID userId = UUID.fromString(userIdParam);
         List<PhoneLocation> phoneLocations = phoneLocationService.findUserPhoneLocation(userId);
 

@@ -1,5 +1,11 @@
+access:
+  token: D9gQUVtI7BekEboW3Z83MALc
+
+googleMaps:
+  apiKey: AIzaSyDZhLQb41u6OcMsPrKwbjGzXcHgcjKwPTI
+
 server:
-  servlet-path: /status
+  servlet-path: /show
 
 management:
   context-path: /
