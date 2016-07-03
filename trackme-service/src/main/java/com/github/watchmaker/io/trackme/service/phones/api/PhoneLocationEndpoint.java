@@ -25,18 +25,17 @@ import java.util.UUID;
 @Path(PhoneLocationEndpoint.PATH)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class PhoneLocationEndpoint {
+public class PhoneLocationEndpoint extends AbstractPhoneEndpoint{
     public static final String PATH = "/phone";
 
     private PhoneLocationService phoneLocationService;
-    private String requiredAccessToken;
 
 
     @Autowired
     public PhoneLocationEndpoint(PhoneLocationService phoneLocationService,
                                  @Value("${access.token}") String requiredAccessToken) {
+        super(requiredAccessToken);
         this.phoneLocationService = phoneLocationService;
-        this.requiredAccessToken = requiredAccessToken;
     }
 
     @Path("/{userId}")
@@ -52,21 +51,15 @@ public class PhoneLocationEndpoint {
         return Response.ok().build();
     }
 
-    private void checkAccessToken(String accessToken) {
-        if (!requiredAccessToken.equals(accessToken)){
-            throw new IllegalArgumentException(String.format("Incorrect access token: %s", accessToken));
-        }
-    }
-
-    @Path("/{userId}/list")
+    @Path("/{userId}/last")
     @GET
     public Response list(@NotNull @PathParam("userId") String userIdParam,
                          @QueryParam("accessToken") String accessToken) {
         checkAccessToken(accessToken);
 
         UUID userId = UUID.fromString(userIdParam);
-        List<PhoneLocation> phoneLocations = phoneLocationService.findUserPhoneLocation(userId);
+        PhoneLocation phoneLocation = phoneLocationService.findUserPhoneLastLocation(userId);
 
-        return Response.ok(phoneLocations).build();
+        return Response.ok(phoneLocation).build();
     }
 }

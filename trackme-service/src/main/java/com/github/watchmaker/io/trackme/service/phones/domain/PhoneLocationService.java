@@ -3,7 +3,6 @@ package com.github.watchmaker.io.trackme.service.phones.domain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,7 +19,7 @@ public class PhoneLocationService {
         phoneLocationRepository.save(phoneLocation);
     }
 
-    public List<PhoneLocation> findUserPhoneLocation(UUID userId) {
-        return phoneLocationRepository.findByUserId(userId);
+    public PhoneLocation findUserPhoneLastLocation(UUID userId) {
+        return phoneLocationRepository.findLastLocationByUserId(userId);
     }
 }

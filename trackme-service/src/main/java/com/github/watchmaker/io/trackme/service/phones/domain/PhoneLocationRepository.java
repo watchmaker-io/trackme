@@ -1,5 +1,6 @@
 package com.github.watchmaker.io.trackme.service.phones.domain;
 
+import com.datastax.driver.core.querybuilder.Ordering;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,14 @@ public class PhoneLocationRepository {
         this.cassandraOperations = cassandraOperations;
     }
 
-    public List<PhoneLocation> findByUserId(UUID userId) {
+    public PhoneLocation findLastLocationByUserId(UUID userId) {
         Select s = QueryBuilder
                 .select()
                 .from(PhoneLocation.COLUMN_FAMILY);
         s.where(QueryBuilder.eq(PhoneLocation.USER_ID, userId));
+        s.limit(1);
 
-        return cassandraOperations.select(s, PhoneLocation.class);
+        return cassandraOperations.selectOne(s, PhoneLocation.class);
     }
 
     public void save(PhoneLocation phoneLocation) {

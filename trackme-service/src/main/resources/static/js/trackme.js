@@ -1,3 +1,9 @@
+var location;
+
+function initLocation(locationParam) {
+    location = locationParam;
+}
+
 var map;
 
 function initMap() {
@@ -35,7 +41,9 @@ function createInfoWindowContent(latLng, zoom) {
         Math.floor(worldCoordinate.y * scale / TILE_SIZE));
 
     return [
-        'Warsaw, mazowieckie',
+        location.name,
+        // FIXME dchojnacki prezentacja szczegolow
+        location.time,
         '//TODO dchojnacki'
     ].join('<br>');
 }
