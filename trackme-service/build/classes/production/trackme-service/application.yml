@@ -1,12 +1,18 @@
-server:
-  servlet-path: /status
+access:
+  token: D9gQUVtI7BekEboW3Z83MALc
 
-management:
-  context-path: /
+googleMaps:
+  apiKey: AIzaSyDZhLQb41u6OcMsPrKwbjGzXcHgcjKwPTI
 
-spring:
-  jersey:
-    type: servlet
+#server:
+#  servlet-path: /show
+#
+#management:
+#  context-path: /
+#
+#spring:
+#  jersey:
+#    type: servlet
 
 cassandra:
   keyspace: trackme

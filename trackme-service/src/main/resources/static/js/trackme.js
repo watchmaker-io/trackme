@@ -1,7 +1,7 @@
-var location;
+var phoneLocation;
 
 function initLocation(locationParam) {
-    location = locationParam;
+    phoneLocation = locationParam;
 }
 
 var map;
@@ -41,10 +41,10 @@ function createInfoWindowContent(latLng, zoom) {
         Math.floor(worldCoordinate.y * scale / TILE_SIZE));
 
     return [
-        location.name,
+        phoneLocation.name,
         // FIXME dchojnacki prezentacja szczegolow
-        location.time,
-        '//TODO dchojnacki'
+        phoneLocation.latitude,
+        phoneLocation.longitude
     ].join('<br>');
 }
 

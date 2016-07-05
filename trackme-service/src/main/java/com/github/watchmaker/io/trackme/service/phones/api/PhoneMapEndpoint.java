@@ -4,6 +4,7 @@ import com.github.watchmaker.io.trackme.service.phones.domain.PhoneLocation;
 import com.github.watchmaker.io.trackme.service.phones.domain.PhoneLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,18 +31,25 @@ public class PhoneMapEndpoint extends AbstractPhoneEndpoint{
         this.googleMapsApiKey = googleMapsApiKey;
     }
 
-    @RequestMapping(value = "/{userId}")
+    @RequestMapping("/{userId}")
     public String showPhoneLastLocation(@PathVariable("userId") String userIdParam,
-                                    @RequestParam("accessToken") String accessToken,
-                                    Model model) {
+                                        @RequestParam("accessToken") String accessToken,
+                                        Model model) {
         checkAccessToken(accessToken);
 
         model.addAttribute("apiKey", googleMapsApiKey);
         UUID userId = UUID.fromString(userIdParam);
         PhoneLocation userPhoneLocation = phoneLocationService.findUserPhoneLastLocation(userId);
-        // FIXME dchojnacki ustawianie propertisow szczegolow
-        model.addAttribute("location", userPhoneLocation);
+        // FIXME dchojnacki ustawianie propertisow
+        model.addAttribute("name", userPhoneLocation.getName());
+        model.addAttribute("latitude", userPhoneLocation.getLatitude());
+        model.addAttribute("longitude", userPhoneLocation.getLongitude());
 
         return "phoneLocation";
+    }
+
+    @MessageMapping("/debug")
+    public void debug() {
+
     }
 }

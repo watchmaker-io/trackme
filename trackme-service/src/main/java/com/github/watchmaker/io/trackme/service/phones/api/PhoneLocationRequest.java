@@ -33,24 +33,26 @@ public class PhoneLocationRequest {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     private DateTime time;
 
+//    public PhoneLocationRequest() {
+//    }
 
-    @JsonCreator
-    public PhoneLocationRequest(@JsonProperty("name") String name,
-                                @JsonProperty("longitude") Double longitude,
-                                @JsonProperty("latitude") Double latitude,
-                                @JsonProperty("altitude") Double altitude,
-                                @JsonProperty("speed") Double speed,
-                                @JsonProperty("accuracy") String accuracy,
-                                @JsonProperty("time") DateTime time
-    ) {
-        this.name = name;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.altitude = altitude;
-        this.speed = speed;
-        this.accuracy = accuracy;
-        this.time = time;
-    }
+//    @JsonCreator
+//    public PhoneLocationRequest(@JsonProperty("name") String name,
+//                                @JsonProperty("longitude") Double longitude,
+//                                @JsonProperty("latitude") Double latitude,
+//                                @JsonProperty("altitude") Double altitude,
+//                                @JsonProperty("speed") Double speed,
+//                                @JsonProperty("accuracy") String accuracy,
+//                                @JsonProperty("time") DateTime time
+//    ) {
+//        this.name = name;
+//        this.longitude = longitude;
+//        this.latitude = latitude;
+//        this.altitude = altitude;
+//        this.speed = speed;
+//        this.accuracy = accuracy;
+//        this.time = time;
+//    }
 
     public String getName() {
         return name;
