@@ -1,6 +1,5 @@
 package com.github.watchmaker.io.trackme.service.phones.domain;
 
-import com.github.watchmaker.io.trackme.service.phones.api.PhoneLocationAccuracy;
 import org.joda.time.DateTime;
 import org.springframework.cassandra.core.Ordering;
 import org.springframework.cassandra.core.PrimaryKeyType;

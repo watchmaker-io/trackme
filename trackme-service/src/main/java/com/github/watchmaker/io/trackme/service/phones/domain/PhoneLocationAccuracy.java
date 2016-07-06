@@ -1,4 +1,4 @@
-package com.github.watchmaker.io.trackme.service.phones.api;
+package com.github.watchmaker.io.trackme.service.phones.domain;
 
 import java.util.HashMap;
 import java.util.Map;

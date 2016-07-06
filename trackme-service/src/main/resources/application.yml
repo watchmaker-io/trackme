@@ -4,15 +4,11 @@ access:
 googleMaps:
   apiKey: AIzaSyDZhLQb41u6OcMsPrKwbjGzXcHgcjKwPTI
 
-#server:
-#  servlet-path: /show
-#
+server:
+  servlet-path: /
+
 #management:
 #  context-path: /
-#
-#spring:
-#  jersey:
-#    type: servlet
 
 cassandra:
   keyspace: trackme

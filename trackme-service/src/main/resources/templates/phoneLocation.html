@@ -14,24 +14,17 @@
             height: 100%;
         }
     </style>
+    <script th:src="@{'/js/sockjs-0.3.4.js'}"></script>
+    <script th:src="@{'/js/stomp.js'}"></script>
 </head>
-<body onload="connect()">
+<body onload="reloadWs()">
 <div id="map"></div>
-<script th:src="@{'/js/sockjs-0.3.4.js'}"></script>
-<script th:src="@{'/js/stomp.js'}"></script>
 <script th:src="@{'/js/trackme.js'}"></script>
-<script th:src="@{'/js/phoneLocationPush.js'}"></script>
 <script th:inline="javascript">
-    var name = [[${name}]];
-    var latitude = [[${latitude}]];
-    var longitude = [[${longitude}]];
+    var phoneLocation = [[${phoneLocation}]];
 
-    initLocation({
-        name: name,
-        latitude: latitude,
-        longitude: longitude
-    });
+    changeLocation(phoneLocation);
 </script>
-<script th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${apiKey} + '&amp;callback=initMap'}" async="defer"></script>
+<script th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${apiKey} + '&amp;callback=reloadMap'}" async="defer"></script>
 </body>
 </html>

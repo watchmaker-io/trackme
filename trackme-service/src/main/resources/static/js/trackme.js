@@ -1,28 +1,35 @@
 var phoneLocation;
 
-function initLocation(locationParam) {
+function changeLocation(locationParam) {
     phoneLocation = locationParam;
 }
 
 var map;
 
-function initMap() {
-    var warsaw = new google.maps.LatLng(52.259, 21.020);
+function reloadMap() {
+    if (phoneLocation) {
+        var currentLocation = new google.maps.LatLng(phoneLocation.latitude, phoneLocation.longitude);
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: currentLocation,
+            zoom: 8
+        });
 
-    var map = new google.maps.Map(document.getElementById('map'), {
-        center: warsaw,
-        zoom: 8
-    });
-
-    var coordInfoWindow = new google.maps.InfoWindow();
-    coordInfoWindow.setContent(createInfoWindowContent(warsaw, map.getZoom()));
-    coordInfoWindow.setPosition(warsaw);
-    coordInfoWindow.open(map);
-
-    map.addListener('zoom_changed', function() {
-        coordInfoWindow.setContent(createInfoWindowContent(warsaw, map.getZoom()));
+        var coordInfoWindow = new google.maps.InfoWindow();
+        coordInfoWindow.setContent(createInfoWindowContent(currentLocation, map.getZoom()));
+        coordInfoWindow.setPosition(currentLocation);
         coordInfoWindow.open(map);
-    });
+
+        map.addListener('zoom_changed', function() {
+            coordInfoWindow.setContent(createInfoWindowContent(currentLocation, map.getZoom()));
+            coordInfoWindow.open(map);
+        });
+
+    } else {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: new google.maps.LatLng(52.259, 21.020),
+            zoom: 8
+        });
+    }
 }
 
 var TILE_SIZE = 256;
@@ -41,10 +48,12 @@ function createInfoWindowContent(latLng, zoom) {
         Math.floor(worldCoordinate.y * scale / TILE_SIZE));
 
     return [
-        phoneLocation.name,
-        // FIXME dchojnacki prezentacja szczegolow
-        phoneLocation.latitude,
-        phoneLocation.longitude
+        "Telefon: " + phoneLocation.name,
+        "(" + phoneLocation.latitude + ", " + phoneLocation.longitude + ")",
+        "Wysokość: " + phoneLocation.altitude,
+        "Prędkość: " + phoneLocation.speed + "m/s",
+        "",
+        phoneLocation.time + "@" + phoneLocation.accuracy
     ].join('<br>');
 }
 
@@ -58,4 +67,30 @@ function project(latLng) {
     return new google.maps.Point(
         TILE_SIZE * (0.5 + latLng.lng() / 360),
         TILE_SIZE * (0.5 - Math.log((1 + siny) / (1 - siny)) / (4 * Math.PI)));
+}
+
+var stompClient = null;
+
+function reloadWs() {
+    disconnect();
+    connect();
+}
+
+function connect() {
+    var socket = new SockJS('/hello');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function(frame) {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/phoneLocationChange', function(location){
+            changeLocation(JSON.parse(location.body));
+            reloadMap();
+        });
+    });
+}
+
+function disconnect() {
+    if (stompClient != null) {
+        stompClient.disconnect();
+    }
+    console.log("Disconnected");
 }

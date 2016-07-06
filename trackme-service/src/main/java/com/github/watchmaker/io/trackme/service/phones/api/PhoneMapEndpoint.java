@@ -4,7 +4,6 @@ import com.github.watchmaker.io.trackme.service.phones.domain.PhoneLocation;
 import com.github.watchmaker.io.trackme.service.phones.domain.PhoneLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +14,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping(PhoneMapEndpoint.PATH)
-public class PhoneMapEndpoint extends AbstractPhoneEndpoint{
+public class PhoneMapEndpoint extends AbstractAccessTokenVerifier {
     public static final String PATH = "/phone-last-location";
 
     private PhoneLocationService phoneLocationService;
@@ -35,21 +34,19 @@ public class PhoneMapEndpoint extends AbstractPhoneEndpoint{
     public String showPhoneLastLocation(@PathVariable("userId") String userIdParam,
                                         @RequestParam("accessToken") String accessToken,
                                         Model model) {
-        checkAccessToken(accessToken);
+        verifyAccessToken(accessToken);
 
         model.addAttribute("apiKey", googleMapsApiKey);
-        UUID userId = UUID.fromString(userIdParam);
-        PhoneLocation userPhoneLocation = phoneLocationService.findUserPhoneLastLocation(userId);
-        // FIXME dchojnacki ustawianie propertisow
-        model.addAttribute("name", userPhoneLocation.getName());
-        model.addAttribute("latitude", userPhoneLocation.getLatitude());
-        model.addAttribute("longitude", userPhoneLocation.getLongitude());
+        PhoneLocationDTO locationDto = getPhoneLocation(userIdParam);
+        model.addAttribute("phoneLocation", locationDto);
 
         return "phoneLocation";
     }
 
-    @MessageMapping("/debug")
-    public void debug() {
+    private PhoneLocationDTO getPhoneLocation(@PathVariable("userId") String userIdParam) {
+        UUID userId = UUID.fromString(userIdParam);
+        PhoneLocation phoneLocation = phoneLocationService.findUserPhoneLastLocation(userId);
 
+        return PhoneLocationFactoryDTO.create(phoneLocation);
     }
 }
